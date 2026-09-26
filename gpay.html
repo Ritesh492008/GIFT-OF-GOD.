@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Pay Transfer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+    <!-- Google Pay Logo -->
+    <div class="flex justify-center mb-6">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Google_Pay_Logo.svg" 
+           alt="Google Pay" 
+           class="h-12">
+    </div>
+
+    <!-- Heading -->
+    <h1 class="text-xl font-bold text-center text-gray-800 mb-4">
+      Send Money with Google Pay
+    </h1>
+
+    <!-- Payment Form -->
+    <form onsubmit="handlePayment(event)" class="space-y-4">
+      <!-- UPI ID -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Receiver UPI ID</label>
+        <input type="text" id="upiId" 
+               placeholder="example@upi" 
+               required
+               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+      </div>
+
+      <!-- Amount -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Amount (INR)</label>
+        <input type="number" id="amount" 
+               placeholder="Enter amount" 
+               min="1" required
+               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+      </div>
+
+      <!-- Note -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Note (optional)</label>
+        <input type="text" id="note" 
+               placeholder="For lunch, rent, etc." 
+               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400">
+      </div>
+
+      <!-- Pay Button -->
+      <button type="submit" 
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition">
+        Pay Now
+      </button>
+    </form>
+
+    <!-- Result Alert -->
+    <div id="alert" class="hidden mt-4 text-center p-3 rounded-lg bg-green-100 text-green-800 font-medium">
+      Payment request created!
+    </div>
+  </div>
+
+  <script>
+    function handlePayment(event) {
+      event.preventDefault();
+      const upiId = document.getElementById("upiId").value;
+      const amount = document.getElementById("amount").value;
+      const note = document.getElementById("note").value;
+
+      // Generate UPI Payment Link
+      const upiUrl = `upi://pay?pa=${upiId}&pn=Receiver&am=${amount}&cu=INR&tn=${note}`;
+
+      // Show Alert
+      const alertBox = document.getElementById("alert");
+      alertBox.innerText = "Redirecting to Google Pay...";
+      alertBox.classList.remove("hidden");
+
+      // Redirect to Google Pay
+      setTimeout(() => {
+        window.location.href = upiUrl;
+      }, 2000);
+    }
+  </script>
+
+</body>
+</html>
